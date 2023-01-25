@@ -2,6 +2,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class ConnectFourFrame extends javax.swing.JFrame {
 
@@ -9,6 +12,8 @@ public class ConnectFourFrame extends javax.swing.JFrame {
     private Graphics ibg;  //will be set to our image buffer's graphic object
     private int[][] board = new int[7][6];
     private int turn = 1;
+    private SoundManager SFX = new SoundManager();
+    
 
     public ConnectFourFrame() {
         initComponents();
@@ -26,6 +31,7 @@ public class ConnectFourFrame extends javax.swing.JFrame {
     }
     
     public void draw(){
+ 
         
         //clear the area, draw white background
         ibg.clearRect(0, 0, panelDraw.getWidth(), panelDraw.getHeight() );
@@ -192,6 +198,12 @@ public class ConnectFourFrame extends javax.swing.JFrame {
             .addGap(0, 219, Short.MAX_VALUE)
         );
 
+        textInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textInfoActionPerformed(evt);
+            }
+        });
+
         labelStats.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelStats.setText("Stats:  Player 01:  0 Wins    Player 2:  0 Wins");
 
@@ -245,11 +257,18 @@ public class ConnectFourFrame extends javax.swing.JFrame {
 
     private void mnuStartNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuStartNewGameActionPerformed
         //replace this later!
+        try {
+            SFX.playSFX("43578 - pilot_killed_indicator_BU.wav");
+        } catch (Exception e) {
+        }
         board = null;
         board = new int[7][6];
+   
         draw();
+        
     }//GEN-LAST:event_mnuStartNewGameActionPerformed
-
+ 
+    
     private void button0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button0ActionPerformed
         buttonPressed(0);
         
@@ -286,13 +305,23 @@ public class ConnectFourFrame extends javax.swing.JFrame {
         board = new int[7][6];
     }//GEN-LAST:event_mnuResetStatsActionPerformed
 
+    private void textInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textInfoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textInfoActionPerformed
+
     private void buttonPressed(int col) {
         System.out.println("Pressed: " + col);
         for (int r = board[0].length-1; r >= 0 ; r--) {
             if (board[col][r] == 0) {
                 board[col][r] = turn;
+                
                 if (checkWin()&&turn == 1) System.out.println("Player Red Won!!!");
                 turn = turn%2+1;
+                try {
+                    SFX.playSFX("Walkie Talkie beep.wav");
+                } catch (Exception e) {
+                }
+                textInfo.setText("Player " +turn+ " turn.");
                 break;
             }
         }
