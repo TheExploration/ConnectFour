@@ -198,6 +198,9 @@
       </Layout>
     </Container>
     <Component class="javax.swing.JTextField" name="textInfo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Start a new game to play! Player 1 is Red and Player 2 is Blue."/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textInfoActionPerformed"/>
       </Events>
@@ -205,8 +208,11 @@
     <Component class="javax.swing.JLabel" name="labelStats">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Stats:  Player 01:  0 Wins    Player 2:  0 Wins"/>
+        <Property name="text" type="java.lang.String" value="Stats:  Player 1:  0 Wins    Player 2:  0 Wins"/>
       </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Stats:  Player 1:  0 Wins    Player 2:  0 Wins"/>
+      </AccessibilityProperties>
     </Component>
   </SubComponents>
 </Form>

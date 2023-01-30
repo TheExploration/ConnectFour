@@ -2,9 +2,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.IOException;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class ConnectFourFrame extends javax.swing.JFrame {
 
@@ -13,71 +10,70 @@ public class ConnectFourFrame extends javax.swing.JFrame {
     private int[][] board = new int[7][6];
     private int turn = 1;
     private SoundManager SFX = new SoundManager();
-    
+    private int player1Wins = 0;
+    private int player2Wins = 0;
 
     public ConnectFourFrame() {
         initComponents();
         setLocationRelativeTo(null);
         setUpImageBuffer();
-        
-        System.out.println(panelDraw.getWidth() + "," + panelDraw.getHeight() );
+        setResizable(false);
+        System.out.println(panelDraw.getWidth() + "," + panelDraw.getHeight());
+        textInfo.setEditable(false);
         
     }
 
     //set our image (buffer) to a new image of the correct size
-    public void setUpImageBuffer(){
-        ib=this.createImage(panelDraw.getWidth(), panelDraw.getHeight() );
-        ibg=ib.getGraphics();
+    public void setUpImageBuffer() {
+        ib = this.createImage(panelDraw.getWidth(), panelDraw.getHeight());
+        ibg = ib.getGraphics();
     }
-    
-    public void draw(){
- 
-        
+
+    public void draw() {
+
         //clear the area, draw white background
-        ibg.clearRect(0, 0, panelDraw.getWidth(), panelDraw.getHeight() );
+        ibg.clearRect(0, 0, panelDraw.getWidth(), panelDraw.getHeight());
         ibg.setColor(Color.white);
-        ibg.fillRect(0, 0, panelDraw.getWidth(), panelDraw.getHeight() );
-        
+        ibg.fillRect(0, 0, panelDraw.getWidth(), panelDraw.getHeight());
+
         //draws individual squares (pass this method the frames graphics object
         drawBoard();
-        
+
         //draws a black border around edge of grid
         ibg.setColor(Color.black);
-        ibg.drawRect(0,0,panelDraw.getWidth(), panelDraw.getHeight());
-        
+        ibg.drawRect(0, 0, panelDraw.getWidth(), panelDraw.getHeight());
+
         //all done drawing your stuff onto the image buffer?
         //get the frame's graphics object and draw our image buffer onto the frame
         Graphics g = panelDraw.getGraphics();
-        g.drawImage(ib,0,0,this);
-        
-        for (int r = 0; r < board.length; r++) {
-            for (int c = 0; c < board[0].length; c++) {
-                if (board[r][c] == 1) {
+        g.drawImage(ib, 0, 0, this);
+
+        for (int c = 0; c < board.length; c++) {
+            for (int r = 0; r < board[0].length; r++) {
+                if (board[c][r] == 1) {
                     g.setColor(Color.RED);
-                    g.fillOval(r*25+103,c*25+27, 20, 20);
+                    g.fillOval(c * 25 + 103, r * 25 + 27, 20, 20);
                 }
-                if (board[r][c] == 2) {
+                if (board[c][r] == 2) {
                     g.setColor(Color.BLUE);
-                    g.fillOval(r*25+103,c*25+27, 20, 20);
+                    g.fillOval(c * 25 + 103, r * 25 + 27, 20, 20);
                 }
             }
         }
-        
-        
+
     }
-    
+
     public void drawBoard() {
         ibg.setColor(Color.BLACK);
         for (int i = 1; i < 8; i++) {
-            ibg.drawLine(100,i*25,275,i*25);
+            ibg.drawLine(100, i * 25, 275, i * 25);
         }
         for (int k = 1; k < 9; k++) {
-            ibg.drawLine(k*25+75,25,k*25+75,175);
+            ibg.drawLine(k * 25 + 75, 25, k * 25 + 75, 175);
         }
-        
+
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -198,6 +194,7 @@ public class ConnectFourFrame extends javax.swing.JFrame {
             .addGap(0, 219, Short.MAX_VALUE)
         );
 
+        textInfo.setText("Start a new game to play! Player 1 is Red and Player 2 is Blue.");
         textInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textInfoActionPerformed(evt);
@@ -205,7 +202,7 @@ public class ConnectFourFrame extends javax.swing.JFrame {
         });
 
         labelStats.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelStats.setText("Stats:  Player 01:  0 Wins    Player 2:  0 Wins");
+        labelStats.setText("Stats:  Player 1:  0 Wins    Player 2:  0 Wins");
 
         mnuGame.setText("Game");
 
@@ -252,32 +249,43 @@ public class ConnectFourFrame extends javax.swing.JFrame {
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
+        labelStats.getAccessibleContext().setAccessibleName("Stats:  Player 1:  0 Wins    Player 2:  0 Wins");
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnuStartNewGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuStartNewGameActionPerformed
-        //replace this later!
+
         try {
             SFX.playSFX("43578 - pilot_killed_indicator_BU.wav");
         } catch (Exception e) {
         }
+
+        button0.setEnabled(true);
+        button1.setEnabled(true);
+        button2.setEnabled(true);
+        button3.setEnabled(true);
+        button4.setEnabled(true);
+        button5.setEnabled(true);
+        button6.setEnabled(true);
         board = null;
         board = new int[7][6];
-   
+        turn = 1;
         draw();
-        
+
+
     }//GEN-LAST:event_mnuStartNewGameActionPerformed
- 
-    
+
+
     private void button0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button0ActionPerformed
         buttonPressed(0);
-        
+
 
     }//GEN-LAST:event_button0ActionPerformed
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         buttonPressed(1);
-        
+
     }//GEN-LAST:event_button1ActionPerformed
 
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
@@ -301,8 +309,15 @@ public class ConnectFourFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_button6ActionPerformed
 
     private void mnuResetStatsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuResetStatsActionPerformed
-        board = null;
-        board = new int[7][6];
+        try {
+            SFX.playSFX("New Ford Door Chime Sound Effect (HQ).wav");
+        } catch (Exception e) {
+
+        }
+        player1Wins = 0;
+        player2Wins = 0;
+        System.out.println("Reset Stats!");
+        labelStats.setText("Stats:  Player 1:  " + player1Wins + " Wins    Player 2:  " + player2Wins + " Wins");
     }//GEN-LAST:event_mnuResetStatsActionPerformed
 
     private void textInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textInfoActionPerformed
@@ -311,109 +326,83 @@ public class ConnectFourFrame extends javax.swing.JFrame {
 
     private void buttonPressed(int col) {
         System.out.println("Pressed: " + col);
-        for (int r = board[0].length-1; r >= 0 ; r--) {
+        for (int r = board[0].length - 1; r >= 0; r--) {
             if (board[col][r] == 0) {
                 board[col][r] = turn;
-                
-                if (checkWin()&&turn == 1) System.out.println("Player Red Won!!!");
-                turn = turn%2+1;
-                try {
-                    SFX.playSFX("Walkie Talkie beep.wav");
-                } catch (Exception e) {
+
+                if (checkWin()) {
+                    if (turn == 1) {
+                        player1Wins++;
+                    }
+                    if (turn == 2) {
+                        player2Wins++;
+                    }
+                    labelStats.setText("Stats:  Player 1:  " + player1Wins + " Wins    Player 2:  " + player2Wins + " Wins");
+                    textInfo.setText("Player " + turn + " Won! Start a new game to play again.");
+                    try {
+                        SFX.playSFX("Walkie Talkie beep.wav");
+                        SFX.playSFX("bbrwin.wav");
+                    } catch (Exception e) {
+                    }
+                    button0.setEnabled(false);
+                    button1.setEnabled(false);
+                    button2.setEnabled(false);
+                    button3.setEnabled(false);
+                    button4.setEnabled(false);
+                    button5.setEnabled(false);
+                    button6.setEnabled(false);
+                    break;
+                } else {
+                    turn = turn % 2 + 1;
+                    try {
+                        SFX.playSFX("Walkie Talkie beep.wav");
+                    } catch (Exception e) {
+                    }
+                    textInfo.setText("Player " + turn + " turn.");
+                    break;
                 }
-                textInfo.setText("Player " +turn+ " turn.");
-                break;
             }
         }
         draw();
-      
-    }
-    
-    public boolean checkWin() {
-        int rows = board.length;
-        int cols = board[0].length;
-        int winCount = 4;
-
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols - winCount + 1; col++) {
-                int piece = board[row][col];
-                if (piece == 0) {
-                    continue;
-                }
-                boolean win = true;
-                for (int i = 1; i < winCount; i++) {
-                    if (board[row][col + i] != piece) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) {
-                    return true;
-                }
-            }
-        }
-
-        for (int row = 0; row < rows - winCount + 1; row++) {
-            for (int col = 0; col < cols; col++) {
-                int piece = board[row][col];
-                if (piece == 0) {
-                    continue;
-                }
-                boolean win = true;
-                for (int i = 1; i < winCount; i++) {
-                    if (board[row + i][col] != piece) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) {
-                    return true;
-                }
-            }
-    }
-
-    for (int row = 0; row < rows - winCount + 1; row++) {
-        for (int col = 0; col < cols - winCount + 1; col++) {
-            int piece = board[row][col];
-            if (piece == 0) {
-                continue;
-            }
-            boolean win = true;
-            for (int i = 1; i < winCount; i++) {
-                if (board[row + i][col + i] != piece) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) {
-                return true;
-            }
-        }
-    }
-
-    for (int row = 0; row < rows - winCount + 1; row++) {
-        for (int col = winCount - 1; col < cols; col++) {
-            int piece = board[row][col];
-            if (piece == 0) {
-                continue;
-            }
-            boolean win = true;
-            for (int i = 1; i < winCount; i++) {
-                if (board[row + i][col - i] != piece) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) {
-                return true;
-            }
-        }
-    }
-
-    return false;
         
+
     }
-    
+
+    public boolean checkWin() {
+        for (int c = 0; c < board.length; c++) {
+            for (int r = 0; r < board[0].length - 3; r++) {
+                if (board[c][r] != 0 && board[c][r] == board[c][r + 1] && board[c][r + 1] == board[c][r + 2] && board[c][r + 2] == board[c][r + 3]) {
+                    return true;
+                }
+            }
+        }
+
+        for (int c = 0; c < board.length - 3; c++) {
+            for (int r = 0; r < board[0].length; r++) {
+                if (board[c][r] != 0 && board[c][r] == board[c + 1][r] && board[c + 1][r] == board[c + 2][r] && board[c + 2][r] == board[c + 3][r]) {
+                    return true;
+                }
+            }
+        }
+        for (int c = 0; c < board.length - 3; c++) {
+            for (int r = 0; r < board[0].length - 3; r++) {
+                if (board[c][r] != 0 && board[c][r] == board[c + 1][r + 1] && board[c + 1][r + 1] == board[c + 2][r + 2] && board[c + 2][r + 2] == board[c + 3][r + 3]) {
+                    return true;
+                }
+            }
+        }
+
+        for (int c = 3; c < board.length; c++) {
+            for (int r = 0; r < board[0].length - 3; r++) {
+                if (board[c][r] != 0 && board[c][r] == board[c - 1][r + 1] && board[c - 1][r + 1] == board[c - 2][r + 2] && board[c - 2][r + 2] == board[c - 3][r + 3]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
