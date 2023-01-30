@@ -194,6 +194,7 @@ public class ConnectFourFrame extends javax.swing.JFrame {
             .addGap(0, 219, Short.MAX_VALUE)
         );
 
+        textInfo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         textInfo.setText("Start a new game to play! Player 1 is Red and Player 2 is Blue.");
         textInfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

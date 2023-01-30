@@ -199,6 +199,7 @@
     </Container>
     <Component class="javax.swing.JTextField" name="textInfo">
       <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Start a new game to play! Player 1 is Red and Player 2 is Blue."/>
       </Properties>
       <Events>
